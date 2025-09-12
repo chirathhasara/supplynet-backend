@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 
-class ProductController extends Controller
+class ProductController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+
+        return
+        [
+            new Middleware('auth:sanctum', except:['index','show'])
+        ];
+
+    }
 
     public function index()
     {
@@ -23,13 +35,14 @@ class ProductController extends Controller
     {
     $fields = $request->validate([
         'name'   => 'required|string|max:255',
-        'image'  => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'image'  => 'nullable|image|max:2048',
         'price'  => 'required|numeric|min:0',
         'units'  => 'required|integer|min:0',
     ]);
 
     if ($request->hasFile('image')) {
-        $fields['image'] = $request->file('image')->store('products', 'public');
+        $path = $request->file('image')->store('products', 'public');
+        $fields['image'] = 'http://127.0.0.1:8000' . '/storage/' . $path;
     }
 
     $product = Product::create($fields);
@@ -57,7 +70,8 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $fields['image'] = $request->file('image')->store('products', 'public');
+            $path = $request->file('image')->store('products', 'public');
+            $fields['image'] = config('app.url') . '/storage/' . $path;
         }
 
         $product->update($fields);

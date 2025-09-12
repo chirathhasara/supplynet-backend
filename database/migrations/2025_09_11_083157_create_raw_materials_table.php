@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('raw_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Suppliers::class);
+            $table->foreignIdFor(\App\Models\Supplier::class);
             $table->string('name');
             $table->decimal('price',10,2);
             $table->timestamps();

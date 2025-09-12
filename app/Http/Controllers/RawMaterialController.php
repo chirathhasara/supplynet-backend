@@ -3,18 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\RawMaterial;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 
 
-class RawMaterialController extends Controller
+class RawMaterialController extends Controller implements HasMiddleware
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public static function middleware()
+    {
+
+        return
+        [
+            new Middleware('auth:sanctum', except:['index','show'])
+        ];
+
+    }
+
     public function index()
     {
-        //
+    $rawMaterials = RawMaterial::all();
+    return response()->json(['data' => $rawMaterials], 200);
     }
 
     public function store(Request $request)
@@ -22,7 +33,7 @@ class RawMaterialController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'suppliers_id' => 'required|exists:suppliers,id',
+            'supplier_id' => 'required|exists:suppliers,id',
         ]);
 
         $rawMaterial = RawMaterial::create($validated);
@@ -33,9 +44,7 @@ class RawMaterialController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(RawMaterial $rawMaterial)
     {
         return response()->json([
@@ -51,7 +60,7 @@ class RawMaterialController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'price' => 'sometimes|required|numeric|min:0',
-            'suppliers_id' => 'sometimes|required|exists:suppliers,id',
+            'supplier_id' => 'sometimes|required|exists:suppliers,id',
         ]);
 
         $rawMaterial->update($validated);
