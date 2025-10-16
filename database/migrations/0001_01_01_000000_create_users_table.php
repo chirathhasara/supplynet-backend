@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignIdFor(\App\Models\Shop::class)->nullable();
+            $table->foreignIdFor(\App\Models\WareHouse::class)->nullable();
             $table->string('role');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deliveries', function (Blueprint $table) {
+        Schema::create('received_orders', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date');
-            $table->foreignIdFor(\App\Models\Shop::class)->constrained()->cascadeOnDelete();
-            $table->json('products'); // <-- store array of objects {product_id, quantity}
-            $table->string('distance');
-            $table->string('approximate_time');
+            $table->foreignIdFor(\App\Models\PurchaseOrder::class);
+            $table->decimal('received_quantity');
+            $table->decimal('variance');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deliveries');
+        Schema::dropIfExists('received_orders');
     }
 };

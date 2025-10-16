@@ -9,4 +9,9 @@ class Delivery extends Model
 {
     /** @use HasFactory<\Database\Factories\DeliveryFactory> */
     use HasFactory;
+    protected $guarded =[];
+    protected $casts = [
+    'products' => 'array',
+    ];
+
 }

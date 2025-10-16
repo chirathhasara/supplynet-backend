@@ -9,4 +9,5 @@ class Quotation extends Model
 {
     /** @use HasFactory<\Database\Factories\QuotationFactory> */
     use HasFactory;
+    protected $guarded =[];
 }

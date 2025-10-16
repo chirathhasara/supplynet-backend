@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Shop::class);
+            $table->dateTime('date');
+            $table->decimal('total_sale',10,2);
             $table->timestamps();
         });
     }
