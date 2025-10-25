@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('date');
             $table->foreignIdFor(\App\Models\RawMaterial::class)->constrained();
+            $table->foreignIdFor(\App\Models\Supplier::class)->constrained();
             $table->decimal('quantity', 10, 2);
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total_price', 10, 2);

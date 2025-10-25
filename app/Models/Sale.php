@@ -10,4 +10,8 @@ class Sale extends Model
     /** @use HasFactory<\Database\Factories\SaleFactory> */
     use HasFactory;
     protected $guarded =[];
+
+    public function shop(){
+        return $this->belongsTo(Shop::class);
+    }
 }

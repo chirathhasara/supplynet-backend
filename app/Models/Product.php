@@ -11,4 +11,12 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded =[];
+
+    public function wareHouse(){
+        return $this->belongsTo(WareHouse::class);
+    }
+
+    public function shops(){
+        return $this->belongsToMany(Shop::class);
+    }
 }

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->dateTime('date');
             $table->foreignIdFor(\App\Models\PurchaseOrder::class);
+            $table->foreignIdFor(\App\Models\RawMaterial::class);
+            $table->foreignIdFor(\App\Models\Supplier::class);
             $table->decimal('received_quantity');
             $table->decimal('variance');
             $table->timestamps();

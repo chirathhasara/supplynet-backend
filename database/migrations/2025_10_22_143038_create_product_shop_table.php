@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deliveries', function (Blueprint $table) {
+        Schema::create('product_shop', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date');
-            $table->foreignIdFor(\App\Models\Shop::class)->constrained()->cascadeOnDelete();
-            $table->json('products'); 
-            $table->string('distance');
-            $table->string('approximate_time');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
+            $table->integer('stock')->default(0);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deliveries');
+        Schema::dropIfExists('product_shop');
     }
 };

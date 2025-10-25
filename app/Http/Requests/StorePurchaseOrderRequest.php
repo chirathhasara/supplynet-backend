@@ -12,6 +12,7 @@ class StorePurchaseOrderRequest extends FormRequest
     public function authorize(): bool
     {
         return false;
+        return true;
     }
 
     /**
@@ -23,6 +24,12 @@ class StorePurchaseOrderRequest extends FormRequest
     {
         return [
             //
+            'date' => 'required|date',
+            'raw_material_id' => 'required|exists:raw_materials,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+            'quantity' => 'required|numeric|min:0',
+            'unit_price' => 'required|numeric|min:0',
+            'due_date' => 'required|date|after:date',
         ];
     }
 }

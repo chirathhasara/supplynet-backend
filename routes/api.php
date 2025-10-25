@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\WareHouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +26,12 @@ Route::apiResource('products', ProductController::class);
 Route::apiResource('raw-materials', RawMaterialController::class);
 Route::apiResource('suppliers', SupplierController::class);
 Route::apiResource('shops', ShopController::class);
+Route::apiResource('sales', SaleController::class);
+Route::apiResource('purchase-orders', PurchaseOrderController::class);
+Route::apiResource('quotations', QuotationController::class);
+Route::apiResource('deliveries', DeliveryController::class);
+Route::apiResource('warehouses',WareHouseController::class);
+
 
 
 
