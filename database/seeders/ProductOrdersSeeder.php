@@ -2,20 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\WareHouse;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class WareHouseSeeder extends Seeder
+class ProductOrdersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        WareHouse::factory()->create([
-            'name'=>'Main WareHouse',
-            'location'=>'colombo'
-        ]);
+        //
     }
 }

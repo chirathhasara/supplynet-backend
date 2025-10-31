@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Shop extends Model
 {
@@ -21,5 +22,10 @@ class Shop extends Model
 
     public function products(){
         return $this->belongsToMany(Product::class);
+    }
+
+     public function productOrders():HasMany
+    {
+        return $this->hasMany(ProductOrders::class);
     }
 }

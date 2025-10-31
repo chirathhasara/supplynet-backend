@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class DeliveryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
         $deliveries = Delivery::with('shop')->latest()->get();

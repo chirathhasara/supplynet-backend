@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('raw_materials', function (Blueprint $table) {
+        Schema::create('product_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Supplier::class);
-            $table->string('name');
-            $table->decimal('price',10,2);
-            $table->decimal('stock',10,2);
+            $table->foreignIdFor(App\Models\Shop::class);
+            $table->foreignIdFor(App\Models\WareHouse::class);
+            $table->json('products');
+            $table->dateTime('due_date');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raw_materials');
+        Schema::dropIfExists('product_orders');
     }
 };

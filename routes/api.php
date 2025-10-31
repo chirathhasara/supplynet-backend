@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RawMaterialController;
+use App\Http\Controllers\ReceivedOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SaleController;
@@ -31,6 +32,8 @@ Route::apiResource('purchase-orders', PurchaseOrderController::class);
 Route::apiResource('quotations', QuotationController::class);
 Route::apiResource('deliveries', DeliveryController::class);
 Route::apiResource('warehouses',WareHouseController::class);
+Route::apiResource('received-orders',ReceivedOrderController::class);
+
 
 
 

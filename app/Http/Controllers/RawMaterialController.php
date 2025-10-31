@@ -33,6 +33,7 @@ class RawMaterialController extends Controller implements HasMiddleware
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:0',
             'supplier_id' => 'required|exists:suppliers,id',
         ]);
 
@@ -60,6 +61,7 @@ class RawMaterialController extends Controller implements HasMiddleware
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'price' => 'sometimes|required|numeric|min:0',
+            'stock' => 'sometimes|required|numeric|min:0',
             'supplier_id' => 'sometimes|required|exists:suppliers,id',
         ]);
 
