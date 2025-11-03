@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductOrdersController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RawMaterialController;
@@ -33,6 +34,8 @@ Route::apiResource('quotations', QuotationController::class);
 Route::apiResource('deliveries', DeliveryController::class);
 Route::apiResource('warehouses',WareHouseController::class);
 Route::apiResource('received-orders',ReceivedOrderController::class);
+Route::apiResource('product-orders',ProductOrdersController::class);
+
 
 
 

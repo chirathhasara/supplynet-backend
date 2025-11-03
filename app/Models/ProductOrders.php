@@ -26,6 +26,9 @@ class ProductOrders extends Model
 
     public function warehouse(): BelongsTo
     {
-        return $this->belongsTo(WareHouse::class);
+        return $this->belongsTo(WareHouse::class, 'ware_house_id');
     }
+
 }
+
+

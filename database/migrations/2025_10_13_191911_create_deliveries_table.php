@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('date');
             $table->foreignIdFor(\App\Models\Shop::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\ProductOrders::class);
             $table->json('products'); 
             $table->string('distance');
             $table->string('approximate_time');

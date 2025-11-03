@@ -14,4 +14,9 @@ class Delivery extends Model
     'products' => 'array',
     ];
 
+
+    public function shop(){
+        return $this->belongsTo(Shop::class);
+    }
+
 }

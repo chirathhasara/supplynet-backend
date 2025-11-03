@@ -12,7 +12,7 @@ class ProductOrdersController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except: ['index', 'show'])
+            new Middleware('auth:sanctum', except: ['index', 'show' ,'store'])
         ];
     }
 
@@ -28,6 +28,7 @@ class ProductOrdersController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
+    
     public function store(Request $request)
     {
         $fields = $request->validate([
