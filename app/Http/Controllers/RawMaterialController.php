@@ -24,7 +24,7 @@ class RawMaterialController extends Controller implements HasMiddleware
 
     public function index()
     {
-    $rawMaterials = RawMaterial::all();
+    $rawMaterials = RawMaterial::with('supplier')->get();
     return response()->json(['data' => $rawMaterials], 200);
     }
 

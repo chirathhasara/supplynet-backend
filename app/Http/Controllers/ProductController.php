@@ -21,6 +21,7 @@ class ProductController extends Controller implements HasMiddleware
             new Middleware('auth:sanctum', except:['index','show'])
         ];
 
+
     }
 
     public function index()

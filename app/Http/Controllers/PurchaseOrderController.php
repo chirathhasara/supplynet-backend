@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\PurchaseOrder;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PurchaseOrderMail;
 
 class PurchaseOrderController extends Controller implements HasMiddleware
 {
@@ -36,13 +39,21 @@ class PurchaseOrderController extends Controller implements HasMiddleware
             'supplier_id' => 'required|exists:suppliers,id',
             'quantity' => 'required|numeric|min:0',
             'unit_price' => 'required|numeric|min:0',
+            'total_price'=>'required|numeric|min:0',
             'due_date' => 'required|date|after:date',
+            'status'=>'nullable'
         ]);
 
         // Calculate total price
-        $fields['total_price'] = $fields['quantity'] * $fields['unit_price'];
-
         $purchaseOrder = PurchaseOrder::create($fields);
+
+        // notify supplier by email if available
+        $supplier = Supplier::find($request->supplier_id);
+        $email = $supplier->email ?? null;
+
+        if ($email) {
+            Mail::to($email)->send(new PurchaseOrderMail($purchaseOrder));
+        }
 
         return response()->json([
             'message' => 'Purchase Order created successfully!',
@@ -71,7 +82,9 @@ class PurchaseOrderController extends Controller implements HasMiddleware
             'supplier_id' => 'sometimes|required|exists:suppliers,id',
             'quantity' => 'sometimes|required|numeric|min:0',
             'unit_price' => 'sometimes|required|numeric|min:0',
+            'total_price'=>'sometimes|required|numeric|min:0',
             'due_date' => 'sometimes|required|date|after:date',
+            'status'=>'sometimes|nullable'
         ]);
 
         // Recalculate total price if quantity or unit price is updated

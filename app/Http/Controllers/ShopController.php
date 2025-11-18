@@ -37,7 +37,7 @@ class ShopController extends Controller implements HasMiddleware
         $fields = $request->validate([
             'name'          => 'required|string|max:255',
             'location'      => 'required|string|max:255',
-            'mobile_number' => 'required|digits_between:7,15', // better for phone numbers
+            'mobile_number' => 'required|digits_between:7,15', 
         ]);
 
         $shop = Shop::create($fields);
@@ -80,4 +80,36 @@ class ShopController extends Controller implements HasMiddleware
             'message' => 'Shop deleted successfully!'
         ], 200);
     }
+
+    public function getShopProducts($shop_id)
+    {
+        try {
+           
+            $shop = Shop::with(['products' => function ($query) {
+                $query->withPivot('stock'); 
+            }])->findOrFail($shop_id);
+
+            
+            $products = $shop->products->map(function ($product) {
+                return [
+                    'product_id' => $product->id,
+                    'product_name' => $product->name,
+                    'stock' => (int) $product->pivot->stock, 
+                ];
+            });
+
+            return response()->json([
+                'shop_id' => $shop->id,
+                'shop_name' => $shop->name,
+                'products' => $products,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch shop products',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

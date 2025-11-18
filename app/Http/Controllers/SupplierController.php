@@ -10,6 +10,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 
 class SupplierController extends Controller implements HasMiddleware
 {
+    
     public static function middleware()
     {
 

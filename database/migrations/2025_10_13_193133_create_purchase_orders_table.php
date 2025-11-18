@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total_price', 10, 2);
             $table->dateTime('due_date');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
