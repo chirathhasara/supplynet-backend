@@ -11,18 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('predictions', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
             $table->foreignIdFor(\App\Models\Shop::class);
             $table->foreignIdFor(\App\Models\Product::class);
-            $table->integer('units_sold');
-            $table->float('price');
-            $table->boolean('promotion_flag');
-            $table->integer('day_of_week');
-            $table->boolean('is_weekend');
-            $table->boolean('is_holiday');
-            $table->integer('lag_7_units_sold');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->integer('predicted_units_for_week');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('predictions');
     }
 };

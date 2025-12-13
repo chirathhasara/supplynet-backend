@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcceptProductOrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductOrdersController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -31,7 +32,13 @@ Route::apiResource('products', ProductController::class);
 Route::apiResource('raw-materials', RawMaterialController::class);
 Route::apiResource('suppliers', SupplierController::class);
 Route::apiResource('shops', ShopController::class);
+
+// Sales specific routes must be before apiResource to avoid route parameter conflicts
+Route::get('/sales/statistics', [SaleController::class, 'statistics']);
+Route::get('/sales/shop/{shopId}', [SaleController::class, 'getByShop']);
+Route::get('/sales/product/{productId}', [SaleController::class, 'getByProduct']);
 Route::apiResource('sales', SaleController::class);
+
 Route::apiResource('purchase-orders', PurchaseOrderController::class);
 Route::apiResource('quotations', QuotationController::class);
 Route::apiResource('deliveries', DeliveryController::class);
@@ -41,12 +48,19 @@ Route::apiResource('product-orders',ProductOrdersController::class);
 Route::apiResource('accept-products',AcceptProductOrderController::class);
 Route::apiResource('accept-pruchase-orders',ReceivedPurchaseOrderController::class);
 
+// Predictions specific routes must be before apiResource
+Route::get('/predictions/statistics', [PredictionController::class, 'statistics']);
+Route::get('/predictions/shop/{shopId}', [PredictionController::class, 'getByShop']);
+Route::get('/predictions/product/{productId}', [PredictionController::class, 'getByProduct']);
+Route::apiResource('predictions', PredictionController::class);
+
 Route::get('/received-purchase-orders/anomaly-statistics', [ReceivedPurchaseOrderController::class, 'getAnomalyStatistics']);
 Route::get('/deliveries/get-shops/{shopId}',[DeliveryController::class,'getShops']);
 Route::get('/shops/{shop_id}/products', [ShopController::class, 'getShopProducts']);
+Route::get('/shops/{shop_id}/products/{product_id}/stock', [ShopController::class, 'getProductStock']);
+Route::get('/products-with-shops', [ShopController::class, 'getAllProductsWithShops']);
 
-
-
+Route::get('/accept-product-orders/statistics', [AcceptProductOrderController::class, 'statistics']);
 
 
 

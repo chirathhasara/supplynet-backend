@@ -145,4 +145,71 @@ class AcceptProductOrderController extends Controller implements HasMiddleware
             'message' => 'Product order acceptance deleted successfully!'
         ], 200);
     }
+
+    /**
+     * Get statistical details of accepted orders.
+     */
+    public function statistics()
+    {
+        try {
+            $totalOrders = AcceptProductOrder::count();
+            
+            // Calculate total products across all orders
+            $totalAcceptedProducts = AcceptProductOrder::get()->sum(function ($order) {
+                $accepted = json_decode($order->accepted_products, true);
+                return array_sum(array_column($accepted, 'units'));
+            });
+            
+            $totalReceivedProducts = AcceptProductOrder::get()->sum(function ($order) {
+                $received = json_decode($order->received_products, true);
+                return array_sum(array_column($received, 'units'));
+            });
+            
+            $totalRejectedProducts = AcceptProductOrder::get()->sum(function ($order) {
+                $rejected = json_decode($order->rejected_products, true);
+                return array_sum(array_column($rejected, 'units'));
+            });
+            
+            // Calculate acceptance rate
+            $acceptanceRate = $totalReceivedProducts > 0 
+                ? round(($totalAcceptedProducts / $totalReceivedProducts) * 100, 2) 
+                : 0;
+            
+            // Orders by shop
+            $ordersByShop = AcceptProductOrder::select('shop_id', DB::raw('count(*) as total'))
+                ->with('shop:id,name')
+                ->groupBy('shop_id')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'shop_id' => $item->shop_id,
+                        'shop_name' => $item->shop->name ?? 'Unknown',
+                        'total_orders' => $item->total
+                    ];
+                });
+            
+            // Recent orders (last 5)
+            $recentOrders = AcceptProductOrder::with(['shop:id,name', 'delivery:id,date'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            return response()->json([
+                'statistics' => [
+                    'total_orders' => $totalOrders,
+                    'total_accepted_products' => $totalAcceptedProducts,
+                    'total_received_products' => $totalReceivedProducts,
+                    'total_rejected_products' => $totalRejectedProducts,
+                    'acceptance_rate' => $acceptanceRate . '%',
+                    'orders_by_shop' => $ordersByShop,
+                    'recent_orders' => $recentOrders
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch statistics.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
