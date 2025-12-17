@@ -86,4 +86,35 @@ class ProductOrdersController extends Controller implements HasMiddleware
             'message' => 'Product Order deleted successfully!'
         ], 200);
     }
+
+    /**
+     * Get orders by shop ID.
+     */
+    public function getOrdersByShop($shop_id)
+    {
+        try {
+            $orders = ProductOrders::where('shop_id', $shop_id)
+                ->with(['shop', 'warehouse'])
+                ->get();
+
+            if ($orders->isEmpty()) {
+                return response()->json([
+                    'message' => 'No orders found for this shop',
+                    'data' => []
+                ], 200);
+            }
+
+            return response()->json([
+                'shop_id' => (int) $shop_id,
+                'total_orders' => $orders->count(),
+                'data' => $orders
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch orders',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

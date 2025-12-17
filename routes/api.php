@@ -59,8 +59,10 @@ Route::get('/deliveries/get-shops/{shopId}',[DeliveryController::class,'getShops
 Route::get('/shops/{shop_id}/products', [ShopController::class, 'getShopProducts']);
 Route::get('/shops/{shop_id}/products/{product_id}/stock', [ShopController::class, 'getProductStock']);
 Route::get('/products-with-shops', [ShopController::class, 'getAllProductsWithShops']);
+Route::get('/product-orders/shop/{shop_id}', [ProductOrdersController::class, 'getOrdersByShop']);
 
 Route::get('/accept-product-orders/statistics', [AcceptProductOrderController::class, 'statistics']);
+Route::get('/users/exclude-top-management', [AuthController::class, 'getAllUsersExceptTopManagement']);
 
 
 

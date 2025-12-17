@@ -65,4 +65,13 @@ class AuthController extends Controller
             'message'=>'you are logged out'
         ];
     }
+
+    public function getAllUsersExceptTopManagement(){
+        
+        $users = User::where('role', '!=', 'top_management')->with('shop', 'wareHouse')->get();
+
+        return response()->json([
+            'users' => $users
+        ]);
+    }
 }

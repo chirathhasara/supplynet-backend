@@ -9,6 +9,8 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReceivedPurchaseOrderMail;
 
 class ReceivedPurchaseOrderController extends Controller implements HasMiddleware
 {
@@ -21,6 +23,7 @@ class ReceivedPurchaseOrderController extends Controller implements HasMiddlewar
 
     /**
      * Display a listing of the resource.
+     * 
      */
     public function index()
     {
@@ -196,10 +199,18 @@ class ReceivedPurchaseOrderController extends Controller implements HasMiddlewar
             // Create received purchase order
             $receivedOrder = ReceivedPurchaseOrder::create($fields);
 
+            // Get supplier information through raw material
+            $supplier = $rawMaterial->supplier;
+
+            // Send email notification to supplier
+            Mail::to($supplier->email)->send(
+                new ReceivedPurchaseOrderMail($receivedOrder, $supplier, $rawMaterial)
+            );
+
             DB::commit();
 
             return response()->json([
-                'message' => 'Received Purchase Order created successfully!',
+                'message' => 'Received Purchase Order created successfully and email sent to supplier!',
                 'data' => $receivedOrder->load('purchaseOrder')
             ], 201);
 
